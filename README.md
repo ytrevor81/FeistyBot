@@ -1,2 +1,2 @@
 # FeistyBot
-A Telegram Bot that automatically shares data of changes in Bitcoin data 
+A Telegram Bot that automatically shares data of changes in Bitcoin 
