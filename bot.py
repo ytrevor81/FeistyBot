@@ -2,10 +2,18 @@
 
 import telebot  #imports pyTelegramBotAPI
 import time
+import sqlite3
+from coingeckodata import *
+from db_functions import *
 
+### Connect to DB ###
+conn = sqlite3.connect("bot.db")
+c = conn.cursor()
 
-bot_token = "935833055:AAGKz1k1ICpnZCveQ648TVLabUmN5QDWWa4"
+### Essential Variables ###
+bot_token = "935833055:AAGKz1k1ICpnZCveQ648TVLabUmN5QDWWa4" #Telegram Bot
 bot = telebot.TeleBot(token=bot_token) #Bot Object
+
 initial_response = '''Welcome to THE Feisty Fern Bot! This bot is intended to give you updates on the change of price of any token you choose. Within a customized time frame.
 
                     Commands:
@@ -15,37 +23,41 @@ initial_response = '''Welcome to THE Feisty Fern Bot! This bot is intended to gi
                     /delete -- Deletes your username and data
                     '''
 
+### Initial SQL Table creation ###
+SQL.initial_bot_table(conn, c)
+
+### Bot Commands ###
 @bot.message_handler(commands=['start'])    #wrapper for all functions below
 def send_welcome(message):
     '''This will send a message on the command /start'''
     bot.reply_to(message, initial_response) #this takes 2 parameters--the command /start and the bot's desired reply
 
 @bot.message_handler(commands=['enter'])    #wrapper for all functions below
-def send_help(message):
-    '''This will send a message on the command /help'''
+def send_enter(message):
+    '''This will send a response and perform all functions related
+     to the command /enter'''
     username = message.from_user.username
     firstname = message.from_user.first_name
-    text = message.text
     if username == None:    #users need a username in order to properly store their data in the DB
         bot.reply_to(message, "You need a username to use this bot ;)")
     else:
-        bot.reply_to(message, "Waz Up, {}! Username: {}".format(firstname, username))
+        SQL.create_tables_for_user(conn, c, username)
+        bot.reply_to(message, "Welcome, {}! Would you like to get updates on a certain token? ( /watch ) Or, would you like to delete your info? ( /delete )  ".format(firstname, username))
 
 @bot.message_handler(commands=['watch'])    #wrapper for all functions below
-def send_help(message):
-    '''This will send a message on the command /help'''
+def send_watch(message):
+    '''This will send a response and perform all functions related
+     to the command /watch'''
     username = message.from_user.username
-    firstname = message.from_user.first_name
     text = message.text
     if username == None:    #users need a username in order to properly store their data in the DB
         bot.reply_to(message, "You need a username to use this bot ;)")
     else:
         bot.reply_to(message, "Waz Up, {}! Username: {}".format(firstname, username))
 
-    print(username)
-    print(firstname)
-    print(text)
-
-
-
+### Runs the Bot ###
 bot.polling()
+
+### Closes DB Connection when script ends ###
+c.close()
+conn.close()

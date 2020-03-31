@@ -1,14 +1,11 @@
 from pycoingecko import CoinGeckoAPI
-import sqlite3
-
-conn = sqlite3.connect('bot.db')
-c = conn.cursor()
+from db_functions import *
 
 gecko = CoinGeckoAPI()
 
-data = gecko.get_price(ids='bitcoin', vs_currencies='usd', include_24hr_vol='true')
+class CoinGecko(object):
+    '''These will serve as user /watch functionality'''
 
-print(data)
-
-c.close()
-conn.close()
+    @classmethod
+    def watchquery(cls):
+        data = gecko.get_price(ids='bitcoin', vs_currencies='usd', include_24hr_vol='true')
