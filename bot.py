@@ -6,10 +6,6 @@ import sqlite3
 from coingeckodata import *
 from db_functions import *
 
-### Connect to DB ###
-conn = sqlite3.connect("bot.db")
-c = conn.cursor()
-
 ### Essential Variables ###
 bot_token = "935833055:AAGKz1k1ICpnZCveQ648TVLabUmN5QDWWa4" #Telegram Bot
 bot = telebot.TeleBot(token=bot_token) #Bot Object
@@ -24,7 +20,7 @@ initial_response = '''Welcome to THE Feisty Fern Bot! This bot is intended to gi
                     '''
 
 ### Initial SQL Table creation ###
-SQL.initial_bot_table(conn, c)
+SQL.initial_bot_table()
 
 ### Bot Commands ###
 @bot.message_handler(commands=['start'])    #wrapper for all functions below
@@ -41,7 +37,7 @@ def send_enter(message):
     if username == None:    #users need a username in order to properly store their data in the DB
         bot.reply_to(message, "You need a username to use this bot ;)")
     else:
-        SQL.create_tables_for_user(conn, c, username)
+        SQL.create_tables_for_user(username)
         bot.reply_to(message, "Welcome, {}! Would you like to get updates on a certain token? ( /watch ) Or, would you like to delete your info? ( /delete )  ".format(firstname, username))
 
 @bot.message_handler(commands=['watch'])    #wrapper for all functions below
@@ -55,9 +51,13 @@ def send_watch(message):
     else:
         bot.reply_to(message, "Waz Up, {}! Username: {}".format(firstname, username))
 
-### Runs the Bot ###
-bot.polling()
+@bot.message_handler(commands=['delete'])    #wrapper for all functions below
+def send_delete(message):
+    ###Deleting SQLite tables
+    username = message.from_user.username
+    SQL.delete_user(username)
+    bot.reply_to(message, "All your data has been deleted. If you want to use this bot again you have to send /enter again")
 
-### Closes DB Connection when script ends ###
-c.close()
-conn.close()
+### Runs the Bot ###
+if __name__ == "__main__":
+    bot.polling()
