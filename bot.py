@@ -53,10 +53,13 @@ def send_watch(message):
 
 @bot.message_handler(commands=['delete'])    #wrapper for all functions below
 def send_delete(message):
-    ###Deleting SQLite tables
+    '''For the command /delete, this will delete all of the user's SQLite tables'''
     username = message.from_user.username
-    SQL.delete_user(username)
-    bot.reply_to(message, "All your data has been deleted. If you want to use this bot again you have to send /enter again")
+    deleted_user = SQL.delete_user(username)
+    if deleted_user == "User existed":
+        bot.reply_to(message, "All of your data has been deleted. If you want to use this bot again you have to send another /enter command")
+    elif deleted_user == "User doesn't exist":
+        bot.reply_to(message, "We have no record of you in our database. Send the /enter command to get started ;)")
 
 ### Runs the Bot ###
 if __name__ == "__main__":
