@@ -46,10 +46,17 @@ def send_watch(message):
      to the command /watch'''
     username = message.from_user.username
     text = message.text
+    print(text)
     if username == None:    #users need a username in order to properly store their data in the DB
         bot.reply_to(message, "You need a username to use this bot ;)")
     else:
-        bot.reply_to(message, "Waz Up, {}! Username: {}".format(firstname, username))
+        valid_info = WatchMessage.is_valid(text)
+        if valid_info == True:
+            bot.reply_to(message, "Thank you, {}! Your command is valid".format(username))
+        else:
+            bot.reply_to(message, "We're sorry, {}. Your command does not match the format this bot requires.".format(username))
+
+
 
 @bot.message_handler(commands=['delete'])    #wrapper for all functions below
 def send_delete(message):

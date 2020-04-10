@@ -1,5 +1,6 @@
 from pycoingecko import CoinGeckoAPI
 from db_functions import *
+from messagehandling import *
 
 gecko = CoinGeckoAPI()
 

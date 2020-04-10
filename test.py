@@ -1,42 +1,35 @@
 ##################This is just for testing##################
 
 import sqlite3
+from pycoingecko import CoinGeckoAPI
 
 conn = sqlite3.connect("bot.db")
 c = conn.cursor()
+gecko = CoinGeckoAPI()
 
-username = "ytrevor"
+watch_msg = "/watch btc 1511h >5%"
 
-def sql(names, user):
-    for sql in enumerate(names):
-        for id_name in sql:
-            if user == id_name:
-                return sql
-                pass
+api_info = watch_msg[7:]
+api_tuple = api_info.partition(" ")
 
+token_name = api_tuple[0]
+api_requests = api_tuple[2]
+print(token_name, api_requests)
 
+data_tuple = api_requests.partition(" ")
 
-def return_exists():
-    with conn:
-        c.execute("SELECT username FROM usernames")
-        usable_names = [str(x).replace("(", "").replace(")", "").replace(",", "").replace("'", "") for x in c.fetchall()]
-        sql_tuple = sql(usable_names, username)
-        id = sql_tuple[0]+1
-        for user in usable_names:
-            print(user, id)
-            if username == user:
-                c.execute("DELETE FROM usernames WHERE rowid = {}".format(id))
-                return('yo')
+timeframe = data_tuple[0]
+percentage = data_tuple[2]
 
-testing = return_exists()
+if percentage[-1] == "%":
+    if percentage[0] == "<" or percentage[0] == ">":
+        print(percentage[1:])
+    else:
+        print("nooooo")
+else:
+    print("fail")
 
-print(testing)
-
-
-
-
-
-
+print(isinstance(float("15"), float))
 
 c.close()
 conn.close()
