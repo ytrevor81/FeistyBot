@@ -1,5 +1,5 @@
 # Telegram Update Bot
-A Telegram Bot that automates updates when the price of a cryptocurrency (the user selects which one) fluctuations within a given period of time. 
+A Telegram Bot that automates updates when the price of a cryptocurrency (the user selects which one) fluctuations within a given period of time.
 
 - Telegram Bot API calls are in bot.py
 - CoinGeckoAPI calls and related functions are in coingeckodata.py
@@ -8,4 +8,4 @@ A Telegram Bot that automates updates when the price of a cryptocurrency (the us
 - All dependencies are in requirements.txt
 
 # How to use:
-- ..../FeistyBot python bot.py
+- ..../Telegram-Update-Bot python bot.py
