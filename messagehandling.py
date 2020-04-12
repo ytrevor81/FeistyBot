@@ -37,31 +37,37 @@ class WatchMessage(object):
     @classmethod
     def valid_timeframe(cls, timeframe_text):
         '''Returns a Boolean'''
-        if timeframe_text[-1] == "h" or timeframe_text[-1] == "m":
-            integer = WatchMessage.return_integer(timeframe_text)
-            if isinstance(integer, int):
-                return True
-            else:
-                return False
-        else:
-            return False
-
-    @classmethod
-    def valid_percentage(cls, percentage_text):
-        '''Returns a Boolean'''
-        if percentage_text[-1] == "%":
-            slice = len(percentage_text)-1
-            new_string = percentage_text[:slice]
-            if new_string[0] == ">" or new_string[0] == "<":
-                float_string = new_string[1:]
-                percentage_float = float(float_string)
-                if isinstance(percentage_float, float):
+        try:
+            if timeframe_text[-1] == "h" or timeframe_text[-1] == "m":
+                integer = WatchMessage.return_integer(timeframe_text)
+                if isinstance(integer, int):
                     return True
                 else:
                     return False
             else:
                 return False
-        else:
+        except IndexError:
+            return False
+
+    @classmethod
+    def valid_percentage(cls, percentage_text):
+        '''Returns a Boolean'''
+        try:
+            if percentage_text[-1] == "%":
+                slice = len(percentage_text)-1
+                new_string = percentage_text[:slice]
+                if new_string[0] == ">" or new_string[0] == "<":
+                    float_string = new_string[1:]
+                    percentage_float = float(float_string)
+                    if isinstance(percentage_float, float):
+                        return True
+                    else:
+                        return False
+                else:
+                    return False
+            else:
+                return False
+        except IndexError:
             return False
 
     @classmethod
