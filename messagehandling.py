@@ -46,8 +46,9 @@ class WatchMessage(object):
                     return False
             else:
                 return False
-        except IndexError:
+        except (IndexError, ValueError) as e:
             return False
+
 
     @classmethod
     def valid_percentage(cls, percentage_text):
@@ -67,7 +68,7 @@ class WatchMessage(object):
                     return False
             else:
                 return False
-        except IndexError:
+        except (IndexError, ValueError) as e:
             return False
 
     @classmethod

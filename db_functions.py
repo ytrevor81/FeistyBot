@@ -92,3 +92,8 @@ class SQL(object):
                 if user == id_name:
                     return sql
                     pass
+
+    @classmethod
+    def updated_data(cls, token, timeframe, percentage, data):
+        '''Updates user data in background'''
+        pass

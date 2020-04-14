@@ -52,6 +52,7 @@ def send_watch(message):
     else:
         valid_info = WatchMessage.is_valid(text)
         if valid_info == True:
+            api_data = CoinGecko.watchquery(username, text)
             bot.reply_to(message, "Thank you, {}! Your command is valid".format(username))
         else:
             bot.reply_to(message, "We're sorry, {}. Your command does not match the format this bot requires.".format(username))
