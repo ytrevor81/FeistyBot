@@ -22,7 +22,7 @@ class SQL(object):
         c = conn.cursor()
         with conn:
             c.execute("INSERT INTO usernames VALUES (?)", (username,))
-            c.execute("CREATE TABLE IF NOT EXISTS {} (token_name TEXT, interval INTEGER, change REAL)".format(username))
+            c.execute("CREATE TABLE IF NOT EXISTS {} (token_name TEXT, interval INTEGER, change REAL)".format(username))    #change this shit to include hours/minutes and less than/greater than
 
     @classmethod
     def delete_replace_table(cls, conn, c, table_name):
