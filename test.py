@@ -5,9 +5,11 @@ from pycoingecko import CoinGeckoAPI
 
 conn = sqlite3.connect("bot.db")
 c = conn.cursor()
-gecko = CoinGeckoAPI()
 
-watch_msg = "/watch btc 1511h >5%"
+string = "5544544%"
+hey = string.replace("%","")
+num = float(hey)
+print(isinstance(num, float))
 
 
 
