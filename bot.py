@@ -7,7 +7,7 @@ from coingeckodata import *
 from db_functions import *
 
 ### Essential Variables ###
-bot_token = "935833055:AAGKz1k1ICpnZCveQ648TVLabUmN5QDWWa4" #Telegram Bot
+bot_token = "1239975962:AAHIVcPidz-MA8fQWSHDrpdh8Xlplcxs2c0" #Telegram Bot
 bot = telebot.TeleBot(token=bot_token) #Bot Object
 
 initial_response = '''Welcome to THE Feisty Fern Bot! This bot is intended to give you updates on the change of price of any token you choose. Within a customized time frame.
