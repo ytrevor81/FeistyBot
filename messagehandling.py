@@ -10,7 +10,7 @@ class WatchMessage(object):
         and token name is valid'''
         api_tuple = WatchMessage.api_tuple(message)
         token_name = WatchMessage.valid_token_name(api_tuple)  #checks if token name entered by the user is valid
-        percentage = WatchMessage.valid_api_data(percentage)   #checks if the timeframe and percentage entered by the user is usable
+        percentage = WatchMessage.valid_api_data(api_tuple)   #checks if the timeframe and percentage entered by the user is usable
         if token_name == True and percentage == True:
             return True
         else:
@@ -54,6 +54,7 @@ class WatchMessage(object):
         gecko = CoinGeckoAPI()
         token_name = api_tuple[0]
         data = gecko.get_price(ids=token_name, vs_currencies='usd')
+        print(data)
         if len(data) == 0:
             return False
         else:

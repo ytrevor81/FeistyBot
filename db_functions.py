@@ -22,7 +22,7 @@ class SQL(object):
         c = conn.cursor()
         with conn:
             c.execute("INSERT INTO usernames VALUES (?)", (username,))
-            c.execute("CREATE TABLE IF NOT EXISTS {} (token_name TEXT, interval INTEGER, change REAL)".format(username))    #change this shit to include hours/minutes and less than/greater than
+            c.execute("CREATE TABLE IF NOT EXISTS {} (token_name TEXT, change REAL)".format(username))
 
     @classmethod
     def delete_replace_table(cls, conn, c, table_name):
@@ -30,7 +30,7 @@ class SQL(object):
         this will delete the current table and create a new one'''
         with conn:
             c.execute("DROP TABLE {}".format(table_name))
-            c.execute("CREATE TABLE {} (volume REAL, price REAL, timestamp TEXT)".format(table_name))
+            c.execute("CREATE TABLE {} (price REAL, timestamp TEXT)".format(table_name))
 
     @classmethod
     def creates_updates_table(cls, username, token_name, interval, change):
@@ -47,7 +47,7 @@ class SQL(object):
                 if official_table_name == table:
                     SQL.delete_replace_table(conn, c, official_table_name)
             c.execute("CREATE TABLE IF NOT EXISTS {}  (volume REAL, price REAL, timestamp TEXT)".format(official_table_name))
-            c.execute("INSERT INTO {} VALUES (?, ?, ?)".format(official_table_name), (token_name, interval, change))
+            c.execute("INSERT INTO {} VALUES (?, ?)".format(official_table_name), (token_name, change))
 
     @classmethod
     def delete_user(cls, username):
@@ -94,6 +94,6 @@ class SQL(object):
                     pass
 
     @classmethod
-    def updated_data(cls, token, timeframe, percentage, data):
+    def updated_data(cls, token, percentage, data):
         '''Updates user data in background'''
         pass
