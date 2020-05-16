@@ -12,7 +12,7 @@ class SQL(object):
         conn = sqlite3.connect("bot.db")
         c = conn.cursor()
         with conn:
-            c.execute("CREATE TABLE IF NOT EXISTS usernames (username TEXT)")
+            c.execute("CREATE TABLE IF NOT EXISTS usernames (username TEXT, token TEXT, change REAL)")
 
     @classmethod
     def create_tables_for_user(cls, username):
@@ -21,24 +21,15 @@ class SQL(object):
         conn = sqlite3.connect("bot.db")
         c = conn.cursor()
         with conn:
-            c.execute("INSERT INTO usernames VALUES (?)", (username,))
             c.execute("CREATE TABLE IF NOT EXISTS {} (token_name TEXT, change REAL)".format(username))
 
     @classmethod
-    def delete_replace_table(cls, conn, c, table_name):
-        '''If the user already has a table from a previous /watch command,
-        this will delete the current table and create a new one'''
-        with conn:
-            c.execute("DROP TABLE {}".format(table_name))
-            c.execute("CREATE TABLE {} (price REAL, timestamp TEXT)".format(table_name))
-
-    @classmethod
-    def creates_updates_table(cls, username, token_name, interval, change):
+    def creates_updates_table(cls, firstname, token_name, interval, change):
         '''Command /watch inputs into username's table and begins the updates table'''
         conn = sqlite3.connect("bot.db")
         c = conn.cursor()
         tables = []
-        official_table_name = username + "_updates"
+        official_table_name = firstname + "_updates"
         with conn:
             c.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
             for table in c.fetchall():
@@ -46,8 +37,8 @@ class SQL(object):
             for table in tables:
                 if official_table_name == table:
                     SQL.delete_replace_table(conn, c, official_table_name)
-            c.execute("CREATE TABLE IF NOT EXISTS {}  (volume REAL, price REAL, timestamp TEXT)".format(official_table_name))
-            c.execute("INSERT INTO {} VALUES (?, ?)".format(official_table_name), (token_name, change))
+            c.execute("CREATE TABLE IF NOT EXISTS {}  (price REAL, timestamp TEXT)".format(official_table_name))
+            c.execute("INSERT INTO {} VALUES (?, ?, ?)".format(official_table_name), (username, token_name, change))
 
     @classmethod
     def delete_user(cls, username):
